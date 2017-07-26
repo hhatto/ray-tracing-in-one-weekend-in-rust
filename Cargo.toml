@@ -1,0 +1,18 @@
+[package]
+name = "ray-tracing-in-one-weekend"
+version = "0.1.0"
+authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
+
+[dependencies]
+
+[[bin]]
+name = "genppm"
+path = "src/genppm.rs"
+
+[[bin]]
+name = "genppm2"
+path = "src/genppm2.rs"
+
+[[bin]]
+name = "ray"
+path = "src/ray.rs"
