@@ -16,3 +16,11 @@ path = "src/genppm2.rs"
 [[bin]]
 name = "main"
 path = "src/main.rs"
+
+[[bin]]
+name = "main5"
+path = "src/main5.rs"
+
+[[bin]]
+name = "main55"
+path = "src/main55.rs"

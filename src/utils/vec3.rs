@@ -1,6 +1,6 @@
 use std::ops::{Add, Div, Mul, Sub};
 
-#[derive(Clone)]
+#[derive(Clone, Default)]
 pub struct Vec3 {
     pub e: (f32, f32, f32),
 }
