@@ -14,5 +14,5 @@ name = "genppm2"
 path = "src/genppm2.rs"
 
 [[bin]]
-name = "ray"
-path = "src/ray.rs"
+name = "main"
+path = "src/main.rs"
