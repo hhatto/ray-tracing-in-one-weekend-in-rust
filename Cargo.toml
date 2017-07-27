@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 
 [dependencies]
+rand = "0.3"
 
 [[bin]]
 name = "genppm"
@@ -24,3 +25,7 @@ path = "src/main5.rs"
 [[bin]]
 name = "main55"
 path = "src/main55.rs"
+
+[[bin]]
+name = "main6"
+path = "src/main6.rs"
