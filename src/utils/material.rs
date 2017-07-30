@@ -82,11 +82,7 @@ impl Metal {
     pub fn new(a: Vec3, f: f32) -> Self {
         Self {
             albedo: a,
-            fuzz: if f < 1. {
-                f
-            } else {
-                1.
-            },
+            fuzz: if f < 1. { f } else { 1. },
         }
     }
 }
@@ -117,9 +113,7 @@ pub struct Dielectric {
 #[allow(dead_code)]
 impl Dielectric {
     pub fn new(ri: f32) -> Self {
-        Self {
-            ref_idx: ri,
-        }
+        Self { ref_idx: ri }
     }
 }
 
@@ -182,7 +176,7 @@ fn refract(v: &Vec3, n: &Vec3, ni_over_nt: f32, refracted: &mut Vec3) -> bool {
     false
 }
 
-fn schlick(cosine: f32, ref_idx: f32) -> f32{
+fn schlick(cosine: f32, ref_idx: f32) -> f32 {
     let mut r0: f32 = (1. - ref_idx) / (1. + ref_idx);
     r0 = r0 * r0;
     r0 + (1. - r0) * (1. - cosine).powi(5)

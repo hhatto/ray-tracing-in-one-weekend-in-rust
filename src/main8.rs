@@ -11,15 +11,12 @@ use utils::random::drand48;
 fn color(r: &Ray, world: &Hitable, depth: i32) -> Vec3 {
     let mut rec = HitRecord::new(Box::new(DummyMat::new()));
     if world.hit(r, 0.001, std::f32::MAX, &mut rec) {
-        //println!("mat={}", rec.mat.as_ref().name());
         let v1 = Vec3::new(0., 0., 0.);
         let v2 = Vec3::new(0., 0., 0.);
         let mut scattered = Ray::new(&v1, &v2);
         let mut attenuation = Vec3::new(0., 0., 0.);
         if depth < 50 && rec.mat.as_ref().scatter(r, &rec, &mut attenuation, &mut scattered) {
-            let c = color(&scattered, world, depth + 1);
-            //println!("mat={}, depth={}, att={:?}, scat={:?}, color={:?}", rec.mat.as_ref().name(), depth, attenuation.clone(), scattered.clone(), c);
-            return attenuation * c;
+            return attenuation * color(&scattered, world, depth + 1);
         }
         return Vec3::new(0., 0., 0.);
     }
@@ -51,7 +48,7 @@ fn main() {
     let s2 = get_sphere!(Lambertian, Vec3::new(0.8, 0.8, 0.), Vec3::new(0., -100.5, -1.), 100.);
     let s3 = get_sphere!(Metal, Vec3::new(0.8, 0.6, 0.2), 1.0, Vec3::new(1., 0., -1.), 0.5);
     let s4 = get_sphere!(Metal, Vec3::new(0.8, 0.8, 0.8), 0.3, Vec3::new(-1., 0., -1.), 0.5);
-    let world: HitableList = HitableList { list : vec![s1, s2, s3, s4] };
+    let world: HitableList = HitableList { list: vec![s1, s2, s3, s4] };
     let mut cam = Camera::new();
 
     for j in (0..ny).rev() {
