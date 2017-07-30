@@ -1,3 +1,4 @@
+#[macro_use]
 mod utils;
 
 use utils::vec3::{Vec3, unit_vector};
@@ -23,19 +24,6 @@ fn color(r: &Ray, world: &Hitable, depth: i32) -> Vec3 {
     let unit_direction = unit_vector(r.direction().clone());
     let t: f32 = 0.5 * (unit_direction.y() + 1.);
     Vec3::new(1., 1., 1.) * (1. - t) + Vec3::new(0.5, 0.7, 1.) * t
-}
-
-macro_rules! get_sphere {
-    ( $m:ident, $x:expr, $y:expr, $r:expr ) => {
-        {
-            Box::new(Sphere::new($y, $r, Box::new($m::new($x))))
-        }
-    };
-    ( $m:ident, $x:expr, $f:expr, $y:expr, $r:expr ) => {
-        {
-            Box::new(Sphere::new($y, $r, Box::new($m::new($x, $f))))
-        }
-    };
 }
 
 fn main() {
