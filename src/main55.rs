@@ -4,9 +4,10 @@ use utils::vec3::{Vec3, unit_vector};
 use utils::ray::Ray;
 use utils::hitable::{Hitable, HitableList, HitRecord};
 use utils::sphere::Sphere;
+use utils::material::DummyMat;
 
 fn color(r: &Ray, world: &Hitable) -> Vec3 {
-    let mut rec = HitRecord { ..HitRecord::default() };
+    let mut rec = HitRecord::new(Box::new(DummyMat::new()));
     if world.hit(r, 0., std::f32::MAX, &mut rec) {
         return Vec3::new(rec.normal.x() + 1., rec.normal.y() + 1., rec.normal.z() + 1.) * 0.5;
     }
@@ -24,10 +25,9 @@ fn main() {
     let horizontal = Vec3::new(4.0, 0.0, 0.0);
     let vertical = Vec3::new(0.0, 2.0, 0.0);
     let origin = Vec3::new(0.0, 0.0, 0.0);
-    let s1 = Sphere::new(Vec3::new(0., 0., -1.), 0.5);
-    let s2 = Sphere::new(Vec3::new(0., -100.5, -1.), 100.);
-    let list: Vec<&Hitable> = vec![&s1, &s2];
-    let world = HitableList::new(list);
+    let s1 = Box::new(Sphere::new(Vec3::new(0., 0., -1.), 0.5, Box::new(DummyMat::new())));
+    let s2 = Box::new(Sphere::new(Vec3::new(0., -100.5, -1.), 100., Box::new(DummyMat::new())));
+    let world = HitableList::new(vec![s1, s2]);
 
     for j in (0..ny).rev() {
         for i in 0..nx {

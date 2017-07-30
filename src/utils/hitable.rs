@@ -1,12 +1,25 @@
 use std::vec::Vec;
-use utils::{vec3, ray};
+use utils::{vec3, ray, material};
 
 #[allow(dead_code)]
-#[derive(Clone, Default)]
+#[derive(Clone)]
 pub struct HitRecord {
     pub t: f32,
     pub p: vec3::Vec3,
     pub normal: vec3::Vec3,
+    pub mat: Box<material::Material>,
+}
+
+#[allow(dead_code)]
+impl HitRecord {
+    pub fn new(m: Box<material::Material>) -> Self {
+        Self {
+            t: 0.,
+            p: vec3::Vec3::new(0., 0., 0.),
+            normal: vec3::Vec3::new(0., 0., 0.),
+            mat: m,
+        }
+    }
 }
 
 pub trait Hitable {
@@ -14,20 +27,20 @@ pub trait Hitable {
 }
 
 #[allow(dead_code)]
-pub struct HitableList<'a> {
-    pub list: Vec<&'a Hitable>,
+pub struct HitableList {
+    pub list: Vec<Box<Hitable>>,
 }
 
 #[allow(dead_code)]
-impl<'a> HitableList<'a> {
-    pub fn new(hitable: Vec<&'a Hitable>) -> Self {
+impl HitableList {
+    pub fn new(hitable: Vec<Box<Hitable>>) -> Self {
         Self { list: hitable }
     }
 }
 
-impl<'a> Hitable for HitableList<'a> {
+impl Hitable for HitableList {
     fn hit(&self, r: &ray::Ray, t_min: f32, t_max: f32, rec: &mut HitRecord) -> bool {
-        let mut temp_rec = HitRecord { ..HitRecord::default() };
+        let mut temp_rec = HitRecord::new(rec.mat.clone());
         let mut hit_anything = false;
         let mut closest_so_far = t_max;
         for h in self.list.iter() {

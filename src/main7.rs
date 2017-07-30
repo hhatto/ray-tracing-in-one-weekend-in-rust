@@ -1,25 +1,15 @@
-extern crate rand;
-
 mod utils;
 
-use rand::{thread_rng, Rng};
 use utils::vec3::{Vec3, unit_vector};
 use utils::ray::Ray;
 use utils::hitable::{Hitable, HitableList, HitRecord};
-use utils::sphere::Sphere;
+use utils::sphere::{Sphere, random_in_unit_sphere};
 use utils::camera::Camera;
-
-fn random_in_unit_sphere() -> Vec3 {
-    loop {
-        let p = Vec3::new(drand48(), drand48(), drand48()) * 2.0 - Vec3::new(1., 1., 1.);
-        if p.squared_len() >= 1.0 {
-            return p;
-        }
-    }
-}
+use utils::material::DummyMat;
+use utils::random::drand48;
 
 fn color(r: &Ray, world: &Hitable) -> Vec3 {
-    let mut rec = HitRecord { ..HitRecord::default() };
+    let mut rec = HitRecord::new(Box::new(DummyMat::new()));
     if world.hit(r, 0.001, std::f32::MAX, &mut rec) {
         let target = rec.normal + random_in_unit_sphere();
         return color(&Ray::new(&rec.p, &target), world) * 0.5;
@@ -29,21 +19,15 @@ fn color(r: &Ray, world: &Hitable) -> Vec3 {
     Vec3::new(1., 1., 1.) * (1. - t) + Vec3::new(0.5, 0.7, 1.) * t
 }
 
-fn drand48() -> f32 {
-    let mut rng = thread_rng();
-    rng.gen_range(0., 1.)
-}
-
 fn main() {
     let nx = 200;
     let ny = 100;
     let ns = 100;
     println!("P3\n{} {}\n255", nx, ny);
 
-    let s1 = Sphere::new(Vec3::new(0., 0., -1.), 0.5);
-    let s2 = Sphere::new(Vec3::new(0., -100.5, -1.), 100.);
-    let list: Vec<&Hitable> = vec![&s1, &s2];
-    let world = HitableList::new(list);
+    let s1 = Box::new(Sphere::new(Vec3::new(0., 0., -1.), 0.5, Box::new(DummyMat::new())));
+    let s2 = Box::new(Sphere::new(Vec3::new(0., -100.5, -1.), 100., Box::new(DummyMat::new())));
+    let world = HitableList::new(vec![s1, s2]);
     let mut cam = Camera::new();
 
     for j in (0..ny).rev() {
