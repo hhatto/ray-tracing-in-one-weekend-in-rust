@@ -40,10 +40,10 @@ fn main() {
     let world: HitableList = HitableList { list: vec![s1, s2, s3, s4, s5] };
     // let cam = Camera::with_lookat(&Vec3::new(-2., 2., 1.), &Vec3::new(0., 0., -1.), &Vec3::new(0., 1., 0.), 90., nx as f32 / ny as f32);
     let cam = Camera::with_lookat(&Vec3::new(2., 1., -1.),
-                                      &Vec3::new(0., 0., -1.),
-                                      &Vec3::new(0., 1., 0.),
-                                      90.,
-                                      nx as f32 / ny as f32);
+                                  &Vec3::new(0., 0., -1.),
+                                  &Vec3::new(0., 1., 0.),
+                                  90.,
+                                  nx as f32 / ny as f32);
 
     for j in (0..ny).rev() {
         for i in 0..nx {

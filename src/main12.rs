@@ -19,9 +19,20 @@ fn random_scene() -> HitableList {
             let center = Vec3::new(a as f32 + 0.9 * drand48(), 0.2, b as f32 * 0.9 * drand48());
             if (center.clone() - Vec3::new(4., 0.2, 0.)).len() > 0.9 {
                 if choose_mat < 0.8 {
-                    list.list.push(get_sphere!(Lambertian, Vec3::new(drand48() * drand48(), drand48() * drand48(), drand48() * drand48()), center, 0.2));
+                    list.list.push(get_sphere!(Lambertian,
+                                               Vec3::new(drand48() * drand48(),
+                                                         drand48() * drand48(),
+                                                         drand48() * drand48()),
+                                               center,
+                                               0.2));
                 } else if choose_mat < 0.95 {
-                    list.list.push(get_sphere!(Metal, Vec3::new(0.5 * (1. + drand48()), 0.5 * (1. + drand48()), 0.5 * (1. + drand48())), 0.5 * drand48(), center, 0.2));
+                    list.list.push(get_sphere!(Metal,
+                                               Vec3::new(0.5 * (1. + drand48()),
+                                                         0.5 * (1. + drand48()),
+                                                         0.5 * (1. + drand48())),
+                                               0.5 * drand48(),
+                                               center,
+                                               0.2));
                 } else {
                     list.list.push(get_sphere!(Dielectric, 1.5, center, 0.2));
                 }
@@ -66,12 +77,12 @@ fn main() {
     let dist_to_focus = 10.;
     let aperture: f32 = 0.1;
     let cam = Camera::with_focus(&lookfrom,
-                                     &lookat,
-                                     &Vec3::new(0., 1., 0.),
-                                     30.,
-                                     nx as f32 / ny as f32,
-                                     aperture,
-                                     dist_to_focus);
+                                 &lookat,
+                                 &Vec3::new(0., 1., 0.),
+                                 30.,
+                                 nx as f32 / ny as f32,
+                                 aperture,
+                                 dist_to_focus);
 
     for j in (0..ny).rev() {
         for i in 0..nx {

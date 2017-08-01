@@ -24,9 +24,20 @@ fn random_scene() -> HitableList {
             let center = Vec3::new(a as f32 + 0.9 * drand48(), 0.2, b as f32 * 0.9 * drand48());
             if (center.clone() - Vec3::new(4., 0.2, 0.)).len() > 0.9 {
                 if choose_mat < 0.8 {
-                    list.list.push(get_sphere!(Lambertian, Vec3::new(drand48() * drand48(), drand48() * drand48(), drand48() * drand48()), center, 0.2));
+                    list.list.push(get_sphere!(Lambertian,
+                                               Vec3::new(drand48() * drand48(),
+                                                         drand48() * drand48(),
+                                                         drand48() * drand48()),
+                                               center,
+                                               0.2));
                 } else if choose_mat < 0.95 {
-                    list.list.push(get_sphere!(Metal, Vec3::new(0.5 * (1. + drand48()), 0.5 * (1. + drand48()), 0.5 * (1. + drand48())), 0.5 * drand48(), center, 0.2));
+                    list.list.push(get_sphere!(Metal,
+                                               Vec3::new(0.5 * (1. + drand48()),
+                                                         0.5 * (1. + drand48()),
+                                                         0.5 * (1. + drand48())),
+                                               0.5 * drand48(),
+                                               center,
+                                               0.2));
                 } else {
                     list.list.push(get_sphere!(Dielectric, 1.5, center, 0.2));
                 }
@@ -65,7 +76,10 @@ fn get_color(i: f32, j: f32, nx: f32, ny: f32, cam: &Arc<Camera>, world: &Arc<Hi
     color(&r, world, 0)
 }
 
-fn exec_worker(cam: &Arc<Camera>, world: &Arc<HitableList>, rx: Receiver<Option<(f32, f32, f32, f32)>>, cx: Sender<Option<Vec3>>) {
+fn exec_worker(cam: &Arc<Camera>,
+               world: &Arc<HitableList>,
+               rx: Receiver<Option<(f32, f32, f32, f32)>>,
+               cx: Sender<Option<Vec3>>) {
     loop {
         match rx.recv().unwrap() {
             Some(arg) => {
@@ -74,7 +88,7 @@ fn exec_worker(cam: &Arc<Camera>, world: &Arc<HitableList>, rx: Receiver<Option<
             }
             None => {
                 // kill thread
-                return
+                return;
             }
         }
     }
@@ -93,12 +107,12 @@ fn main() {
     let dist_to_focus = 10.;
     let aperture: f32 = 0.1;
     let cam = Camera::with_focus(&lookfrom,
-                                     &lookat,
-                                     &Vec3::new(0., 1., 0.),
-                                     30.,
-                                     nx as f32 / ny as f32,
-                                     aperture,
-                                     dist_to_focus);
+                                 &lookat,
+                                 &Vec3::new(0., 1., 0.),
+                                 30.,
+                                 nx as f32 / ny as f32,
+                                 aperture,
+                                 dist_to_focus);
     let mut workers = vec![];
     let mut handles = vec![];
     let world_arc = Arc::new(world);
@@ -111,7 +125,7 @@ fn main() {
         let (worker_tx, worker_rx) = channel::<Option<(f32, f32, f32, f32)>>();
         workers.push(worker_tx.clone());
         let c_tx = calc_tx.clone();
-        handles.push(thread::spawn(move || { exec_worker(&cam, &world, worker_rx, c_tx) }));
+        handles.push(thread::spawn(move || exec_worker(&cam, &world, worker_rx, c_tx)));
     }
 
     for j in (0..ny).rev() {
@@ -120,13 +134,14 @@ fn main() {
             for cnt in 0..ns {
                 let offset = cnt % CONCURRENCY;
                 let req = workers[offset].clone();
-                req.send(Some((i as f32, j as f32, nx as f32, ny as f32))).unwrap();
+                req.send(Some((i as f32, j as f32, nx as f32, ny as f32)))
+                    .unwrap();
             }
-            
+
             for _ in 0..ns {
                 match calc_rx.recv().unwrap() {
-                    Some(ret) => { col = col + ret },
-                    None => break
+                    Some(ret) => col = col + ret,
+                    None => break,
                 }
             }
             col = col / ns as f32;

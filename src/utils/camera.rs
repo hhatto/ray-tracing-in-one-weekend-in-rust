@@ -95,7 +95,7 @@ impl Camera {
         let rd = random_in_unit_disk() * self.lens_radius;
         let offset: Vec3 = self.u.clone() * rd.x() + self.v.clone() * rd.y();
         let ray_vec = self.lower_left_corner.clone() + self.horizontal.clone() * u + self.vertical.clone() * v -
-                       self.origin.clone() - offset.clone();
+                      self.origin.clone() - offset.clone();
         let origin = self.origin.clone() + offset.clone();
         Ray::new(&origin, &ray_vec)
     }

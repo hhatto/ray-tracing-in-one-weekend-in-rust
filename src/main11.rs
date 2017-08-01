@@ -44,12 +44,12 @@ fn main() {
     let dist_to_focus = (lookfrom.clone() - lookat.clone()).len();
     let aperture: f32 = 2.;
     let cam = Camera::with_focus(&lookfrom,
-                                     &lookat,
-                                     &Vec3::new(0., 1., 0.),
-                                     20.,
-                                     nx as f32 / ny as f32,
-                                     aperture,
-                                     dist_to_focus);
+                                 &lookat,
+                                 &Vec3::new(0., 1., 0.),
+                                 20.,
+                                 nx as f32 / ny as f32,
+                                 aperture,
+                                 dist_to_focus);
 
     for j in (0..ny).rev() {
         for i in 0..nx {
