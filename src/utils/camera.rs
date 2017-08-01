@@ -13,9 +13,6 @@ pub struct Camera {
     pub v: Vec3,
     pub w: Vec3,
     pub lens_radius: f32,
-
-    #[allow(dead_code)]
-    ray_vec: Vec3,
 }
 
 #[allow(dead_code)]
@@ -90,17 +87,17 @@ impl Camera {
         }
     }
 
-    pub fn get_ray(&mut self, u: f32, v: f32) -> Ray {
-        // self.ray_vec = self.lower_left_corner.clone() + self.horizontal.clone() * u + self.vertical.clone() * v -
-        //                self.origin.clone();
-        // Ray::new(&self.origin, &self.ray_vec)
+    pub fn get_ray(&self, u: f32, v: f32) -> Ray {
+        // let ray_vec = self.lower_left_corner.clone() + self.horizontal.clone() * u + self.vertical.clone() * v -
+        //               self.origin.clone();
+        // Ray::new(&self.origin, &ray_vec)
 
         let rd = random_in_unit_disk() * self.lens_radius;
         let offset: Vec3 = self.u.clone() * rd.x() + self.v.clone() * rd.y();
-        self.ray_vec = self.lower_left_corner.clone() + self.horizontal.clone() * u + self.vertical.clone() * v -
+        let ray_vec = self.lower_left_corner.clone() + self.horizontal.clone() * u + self.vertical.clone() * v -
                        self.origin.clone() - offset.clone();
         let origin = self.origin.clone() + offset.clone();
-        Ray::new(&origin, &self.ray_vec)
+        Ray::new(&origin, &ray_vec)
     }
 }
 

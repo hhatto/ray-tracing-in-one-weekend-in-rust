@@ -31,6 +31,11 @@ pub struct HitableList {
     pub list: Vec<Box<Hitable>>,
 }
 
+#[cfg(feature="concurrency")]
+unsafe impl Sync for HitableList {}
+#[cfg(feature="concurrency")]
+unsafe impl Send for HitableList {}
+
 #[allow(dead_code)]
 impl HitableList {
     pub fn new(hitable: Vec<Box<Hitable>>) -> Self {

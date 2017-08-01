@@ -6,6 +6,9 @@ authors = ["Hideo Hattori <hhatto.jp@gmail.com>"]
 [dependencies]
 rand = "0.3"
 
+[features]
+concurrency = []
+
 [[bin]]
 name = "genppm"
 path = "src/genppm.rs"
@@ -57,3 +60,8 @@ path = "src/main11.rs"
 [[bin]]
 name = "main12"
 path = "src/main12.rs"
+
+[[bin]]
+name = "main12-concurrent"
+path = "src/main12-concurrent.rs"
+required-features = ["concurrency"]
