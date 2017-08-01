@@ -37,7 +37,7 @@ fn main() {
     let s1 = get_sphere!(Lambertian, Vec3::new(0., 0., 1.), Vec3::new(-r, 0., -1.), r);
     let s2 = get_sphere!(Lambertian, Vec3::new(1., 0., 0.), Vec3::new(r, 0., -1.), r);
     let world: HitableList = HitableList { list: vec![s1, s2] };
-    let mut cam = Camera::with_fov(90., nx as f32 / ny as f32);
+    let cam = Camera::with_fov(90., nx as f32 / ny as f32);
 
     for j in (0..ny).rev() {
         for i in 0..nx {

@@ -43,7 +43,7 @@ fn main() {
     let lookat = Vec3::new(0., 0., -1.);
     let dist_to_focus = (lookfrom.clone() - lookat.clone()).len();
     let aperture: f32 = 2.;
-    let mut cam = Camera::with_focus(&lookfrom,
+    let cam = Camera::with_focus(&lookfrom,
                                      &lookat,
                                      &Vec3::new(0., 1., 0.),
                                      20.,

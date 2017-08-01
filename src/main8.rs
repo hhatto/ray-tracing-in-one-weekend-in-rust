@@ -37,7 +37,7 @@ fn main() {
     let s3 = get_sphere!(Metal, Vec3::new(0.8, 0.6, 0.2), 1.0, Vec3::new(1., 0., -1.), 0.5);
     let s4 = get_sphere!(Metal, Vec3::new(0.8, 0.8, 0.8), 0.3, Vec3::new(-1., 0., -1.), 0.5);
     let world: HitableList = HitableList { list: vec![s1, s2, s3, s4] };
-    let mut cam = Camera::new();
+    let cam = Camera::new();
 
     for j in (0..ny).rev() {
         for i in 0..nx {

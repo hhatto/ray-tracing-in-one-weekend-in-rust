@@ -28,7 +28,7 @@ fn main() {
     let s1 = Box::new(Sphere::new(Vec3::new(0., 0., -1.), 0.5, Box::new(DummyMat::new())));
     let s2 = Box::new(Sphere::new(Vec3::new(0., -100.5, -1.), 100., Box::new(DummyMat::new())));
     let world = HitableList::new(vec![s1, s2]);
-    let mut cam = Camera::new();
+    let cam = Camera::new();
 
     for j in (0..ny).rev() {
         for i in 0..nx {
